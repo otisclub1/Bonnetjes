@@ -1,0 +1,38 @@
+
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="manifest" href="manifest.json" />
+  <link rel="apple-touch-icon" href="icon.png" />
+  <title>Bonnetjes</title>
+</head>
+<body>
+  <h1>Bonnetjes App</h1>
+  <button onclick="start()">Maak foto</button>
+  <script>
+    async function start() {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(pos => {
+          console.log("Locatie:", pos.coords.latitude, pos.coords.longitude);
+        });
+      }
+      const input = document.createElement('input');
+      input.type = 'file';
+      input.accept = 'image/*';
+      input.capture = 'environment';
+      input.onchange = () => {
+        const file = input.files[0];
+        const a = document.createElement('a');
+        const now = new Date();
+        const timestamp = now.toISOString().slice(0, 19).replace(/[:T]/g, "-");
+        a.download = "Bonnetje_" + timestamp + ".jpg";
+        a.href = URL.createObjectURL(file);
+        a.click();
+      };
+      input.click();
+    }
+  </script>
+</body>
+</html>
